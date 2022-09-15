@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import {Routes,Route} from "react-router-dom";
+import { useSelector } from "react-redux";
+import Login from './components/base/Login';
+import Error from './components/base/Error';
+import Nav from './components/base/Nav';
+import HomePage from "./components/Todo/HomePage";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const isLogin = useSelector((state) => state.isLogin);
+const user = JSON.parse(localStorage.getItem("userData"));
+const userIsLogin=()=>{
+  if(user!=null){
+    return true;
+  }
+}
+  return (<>
+    <Nav />
+    <div className="container my-5">
+      <div className="row">
+        <Routes>
+            <Route path="error" element={<Error />} /> 
+             {userIsLogin && <Route path="/" element={<HomePage />} />} 
+             {!isLogin && <Route path="/login" element={<Login />} />} 
+             {/* <Route path="login" element={!isLogin ? <Login /> : <Error />} />  */}
+        </Routes>
+      </div>
     </div>
+    </>
   );
 }
 
